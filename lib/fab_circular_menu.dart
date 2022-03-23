@@ -16,6 +16,7 @@ class FabCircularMenu extends StatefulWidget {
   final Color? fabColor;
   final Color? fabOpenColor;
   final Color? fabCloseColor;
+  final AnimatedIconData? fabAnimatedIconData;
   final Widget? fabChild;
   final Widget fabOpenIcon;
   final Widget fabCloseIcon;
@@ -78,6 +79,7 @@ class FabCircularMenuState extends State<FabCircularMenu>
   late Animation _rotateCurve;
   Animation<Color?>? _colorAnimation;
   late Animation _colorCurve;
+  AnimatedIcon? _animatedIcon;
 
   bool _isOpen = false;
   bool _isAnimating = false;
@@ -106,6 +108,9 @@ class FabCircularMenuState extends State<FabCircularMenu>
           ..addListener(() {
             setState(() {});
           });
+    if(widget.fabAnimatedIconData != null){
+      _animatedIcon = AnimatedIcon(icon: widget.fabAnimatedIconData!, progress: _animationController);
+    }
   }
 
   @override
@@ -196,7 +201,7 @@ class FabCircularMenuState extends State<FabCircularMenu>
                 }
               },
               child: Center(
-                child: widget.fabChild == null
+                child:  widget.fabAnimatedIconData != null ? _animatedIcon : widget.fabChild == null
                     ? (_scaleAnimation.value == 1.0
                         ? widget.fabCloseIcon
                         : widget.fabOpenIcon)
